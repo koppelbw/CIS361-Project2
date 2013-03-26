@@ -1,0 +1,2 @@
+Design patterns are considered as an important element in computer science. [DELAY] A design pattern describes a recurring design problem, a solution, and the context in which that solution works. [NEWLNN] It also names a technique and describes its costs and benefits. [DELAY]
+Successful application frameworks are full of design patterns. [ERASE] Examples of design patterns can be found in frameworks. [OVER]
