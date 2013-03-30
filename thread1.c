@@ -1,5 +1,6 @@
 #include "proj2.h"
 #include <ctype.h>
+#include <unistd.h>
 #define TRUE 1
 #define FALSE 0
 extern pthread_mutex_t mutex;	
@@ -12,7 +13,7 @@ extern char buffer[];
 void displayText(char line[], int lettercnt){
 
 
-printf("\nlc: %d\n",lettercnt);	
+//printf("\nlc: %d\n",lettercnt);	
 
 
 //char *tmp;
@@ -23,7 +24,8 @@ printf("\nlc: %d\n",lettercnt);
 	int i;
 	for(i = 0; i < lettercnt; i++){
 		if(isprint(line[i])){
-			printf("%c", line[i]);
+			if(line[i] != ']')
+				printf("%c", line[i]);
 		}else{
 			printf("\nERROR: NON-DISPLAYABLE CHARACTER.\n");
 		}
@@ -32,8 +34,18 @@ printf("\nlc: %d\n",lettercnt);
 }
 
 void execComm(char comm[]){
-	printf("\nExecute Command: %s\n", comm);
+//	printf("\nExecute Command: %s\n", comm);
 	//use if/else ladder	
+	//
+	if(strcmp(comm, "NEWLN") == 0){
+		printf("\n");
+	}else if(strcmp(comm, "TAB") == 0){
+		printf("\t");
+	}else if(strcmp(comm, "DELAY") == 0){
+		sleep(2);
+	}else
+		printf("\nERROR: COMMAND NOT FOUND.\n");
+
 }
 
 void * controller(void * arg)
