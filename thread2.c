@@ -1,6 +1,7 @@
 #include "proj2.h"
 #define true 1
 #define false 0
+
 extern pthread_mutex_t mutex;		
 extern pthread_cond_t reading_done;
 extern pthread_cond_t writing_done;
@@ -8,37 +9,29 @@ extern pthread_cond_t writing_done;
 extern int  current;			 
 extern char buffer[];
 
-void * devDriver(void * arg)
-{
-	//igore the parameter arg which is not useful in this project	
+/* This function retrieves text from the specified text file and 
+ * sends it to BufferWriter().*/
+void *devDriver(void * arg){
 
-	//read seven characters from the input file into an array
-	//and use bufferWritter() with that array as the parameter
-	//to store those characters in the buffer shared between 
-	//threads; do this repeatedly until EOF is reached.  
-	// note that EOF needs to be stored in the buffer as well. 
+	char ch = 'a', tmp[7];
+	int end = false, i;
 
 	FILE *ifp;
-	ifp = fopen("test.txt", "r");
+	ifp = fopen("test3.txt", "r");
 	
 	if(ifp == NULL){
 		printf("Testing file not found!");
 		exit(1);
 	}
 
-char ch = 'a';
-int end = false;
-char tmp[7];
-
+	//sends the entire text file to BufferWriter() 7 chars at a time
 	while(end != true){
-		int i;
 		for(i = 0; i < 7; i++){
 			if(ch == EOF)
 				end = true;
 			else{
 				ch = fgetc(ifp);
 				tmp[i] = ch;
-//	printf("%c", tmp[i]);
 			}
 		}
 		bufferWriter(tmp);
@@ -47,9 +40,8 @@ char tmp[7];
 }
 
 
-// bufferWriter() stores the seven characters in array data into the  
-// shared buffer
-
+/* bufferWriter() stores the seven characters in array data into the 
+ * shared buffer*/
 void bufferWriter(char data[])
 {
    	pthread_mutex_lock(&mutex);
